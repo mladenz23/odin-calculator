@@ -21,6 +21,11 @@ body {
   box-sizing: border-box;
   background-color: lightblue;
   border-radius: 5px;
+  font-size: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 20px;
 }
 
 .rows {
@@ -43,4 +48,14 @@ body {
 
 .button:active {
   background-color: rgb(180, 180, 180);
+}
+
+.clear,
+.equals {
+  background-color: rgb(255, 136, 136);
+}
+
+.clear:active,
+.equals:active {
+  background-color: rgb(255, 102, 102);
 }

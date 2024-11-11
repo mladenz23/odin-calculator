@@ -1,6 +1,7 @@
 const buttons = document.querySelectorAll('.onScreen');
 const display = document.querySelector('#display');
 const equals = document.querySelector('.equals');
+const clear = document.querySelector('.clear');
 
 let num1 = '';
 let num2 = '';
@@ -62,5 +63,15 @@ const operate = function () {
   });
 };
 
+const clearDisplay = function () {
+  clear.addEventListener('click', () => {
+    num1 = '';
+    num2 = '';
+    op = null;
+    display.textContent = '';
+  });
+};
+
+clearDisplay();
 displayNumber();
 operate();
