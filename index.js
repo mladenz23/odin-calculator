@@ -1,11 +1,10 @@
 const buttons = document.querySelectorAll('.onScreen');
-// const operators = document.querySelectorAll('.operator');
 const display = document.querySelector('#display');
 const equals = document.querySelector('.equals');
 
-let num1;
-let num2;
-let op;
+let num1 = '';
+let num2 = '';
+let op = null;
 
 const add = function (a, b) {
   return a + b;
@@ -26,44 +25,42 @@ const divide = function (a, b) {
 const displayNumber = function () {
   buttons.forEach(btn => {
     btn.addEventListener('click', function () {
-      let tempNumber;
-      let index;
-      let ops = ['+', '-', '*', '/'];
+      const content = btn.textContent;
 
-      display.textContent += btn.textContent;
-      tempNumber = display.textContent;
-
-      for (let i = 0; i < tempNumber.length; i++) {
-        if (ops.includes(tempNumber[i])) {
-          index = i;
+      if (!isNaN(content)) {
+        if (op === null) {
+          num1 += content;
+        } else {
+          num2 += content;
+        }
+        display.textContent += content;
+      } else if (['+', '-', '*', '/'].includes(content) && num1) {
+        if (!op) {
+          op = content;
+          display.textContent += content;
         }
       }
-
-      num1 = +tempNumber.slice(0, index);
-      num2 = +tempNumber.slice(index + 1);
-      op = tempNumber[index];
-
-      add(num1, num2);
-
-      // console.log('Num1: ' + num1, 'Num2: ' + num2, 'Op: ' + op);
-      // console.log(tempNumber);
     });
   });
 };
 
-// fix
-const operate = function (n1, n2, op) {
-  displayNumber();
-  let result;
-
-  if (op === '+') result = add(n1, n2);
-  if (op === '-') result = subtract(n1, n2);
-  if (op === '*') result = multiply(n1, n2);
-  if (op === '/') result = divide(n1, n2);
-
+const operate = function () {
   equals.addEventListener('click', () => {
-    display.textContent = result;
+    if (num1 && num2 && op) {
+      const n1 = parseFloat(num1);
+      const n2 = parseFloat(num2);
+
+      if (op === '+') display.textContent = add(n1, n2);
+      if (op === '-') display.textContent = subtract(n1, n2);
+      if (op === '*') display.textContent = multiply(n1, n2);
+      if (op === '/') display.textContent = divide(n1, n2);
+    }
+
+    num1 = display.textContent.toString();
+    num2 = '';
+    op = null;
   });
 };
 
-operate(num1, num2, op);
+displayNumber();
+operate();
