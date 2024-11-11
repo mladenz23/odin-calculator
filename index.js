@@ -6,6 +6,7 @@ const clear = document.querySelector('.clear');
 let num1 = '';
 let num2 = '';
 let op = null;
+let result;
 
 const add = function (a, b) {
   return a + b;
@@ -26,6 +27,8 @@ const divide = function (a, b) {
 const displayNumber = function () {
   buttons.forEach(btn => {
     btn.addEventListener('click', function () {
+      if (display.textContent === 'ERROR') clearHelper();
+
       const content = btn.textContent;
 
       if (!isNaN(content)) {
@@ -47,29 +50,45 @@ const displayNumber = function () {
 
 const operate = function () {
   equals.addEventListener('click', () => {
-    if (num1 && num2 && op) {
-      const n1 = parseFloat(num1);
-      const n2 = parseFloat(num2);
+    try {
+      if (num1 && num2 && op) {
+        const n1 = parseFloat(num1);
+        const n2 = parseFloat(num2);
 
-      if (op === '+') display.textContent = add(n1, n2);
-      if (op === '-') display.textContent = subtract(n1, n2);
-      if (op === '*') display.textContent = multiply(n1, n2);
-      if (op === '/') display.textContent = divide(n1, n2);
+        if (op === '+') result = add(n1, n2);
+        if (op === '-') result = subtract(n1, n2);
+        if (op === '*') result = multiply(n1, n2);
+        if (op === '/') result = divide(n1, n2);
+      }
+
+      let rStr = result.toString();
+      if (rStr.includes('.')) {
+        const rArr = rStr.split('.');
+        if (rArr[1].length > 5) rArr[1] = rArr[1].slice(0, 2);
+        rStr = rArr.join('.');
+        result = +rStr;
+      }
+
+      display.textContent = result;
+      num1 = display.textContent.toString();
+      num2 = '';
+      op = null;
+    } catch (err) {
+      console.log(err);
+      display.textContent = 'ERROR';
     }
-
-    num1 = display.textContent.toString();
-    num2 = '';
-    op = null;
   });
 };
 
 const clearDisplay = function () {
-  clear.addEventListener('click', () => {
-    num1 = '';
-    num2 = '';
-    op = null;
-    display.textContent = '';
-  });
+  clear.addEventListener('click', () => clearHelper());
+};
+
+const clearHelper = function () {
+  num1 = '';
+  num2 = '';
+  op = null;
+  display.textContent = '';
 };
 
 clearDisplay();
