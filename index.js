@@ -21,13 +21,14 @@ const multiply = function (a, b) {
 };
 
 const divide = function (a, b) {
+  if (b === 0) return 'Error';
   return a / b;
 };
 
 const displayNumber = function () {
   buttons.forEach(btn => {
     btn.addEventListener('click', function () {
-      if (display.textContent === 'ERROR') clearHelper();
+      if (display.textContent === 'Error') clearHelper();
 
       const content = btn.textContent;
 
@@ -75,7 +76,7 @@ const operate = function () {
       op = null;
     } catch (err) {
       console.log(err);
-      display.textContent = 'ERROR';
+      display.textContent = 'Error';
     }
   });
 };
